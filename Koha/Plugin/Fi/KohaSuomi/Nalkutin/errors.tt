@@ -1,10 +1,3 @@
-[% USE HtmlTags %]
-[% SWITCH error.error %]
-[% CASE 'FIELD_LENGTH' %]<span>[% error.field | $HtmlTags tag=>'b'  %]: Length is [% error.length | $HtmlTags tag=>'b' %], should be [% error.wanted | $HtmlTags tag=>'b' %]</span>
-[% CASE 'FIELD_VALUE'  %]<span>[% error.field | $HtmlTags tag=>'b'  %]: Illegal value "[% error.value | html | $HtmlTags tag=>'b' %]", should be [% error.required %]</span>
-[% CASE 'FIELD_VALUE_POS'  %]<span>[% error.field | $HtmlTags tag=>'b'  %]/[% error.pos %]: Illegal value "[% error.value | html | $HtmlTags tag=>'b' %]", should be [% error.required %]</span>
-[% CASE 'NOT_REPEATABLE_SUBFIELD' %]<span>[% error.field | $HtmlTags tag=>'b'  %]: Subfield not repeatable, used [% error.count %] times</span>
-[% CASE 'NOT_REPEATABLE_FIELD' %]<span>[% error.field | $HtmlTags tag=>'b'  %]: Field not repeatable, used [% error.count %] times</span>
-[% CASE 'INDICATOR' %]<span>[% error.field | $HtmlTags tag=>'b'  %]: Indicator [% error.indicator %] is "[% error.current | html | $HtmlTags tag=>'b' %]", should be [% error.valid | html | $HtmlTags tag=>'b' %]</span>
-[% CASE 'NOT_IN_FORMAT' %]<span>[% error.field | $HtmlTags tag=>'b'  %]: Not used in format</span>
-[% END %]
+[% SET error.field = '<B>' _ error.field _ '</B>' %]
+[% PROCESS "$lang_inc" %]
+[% I18N.${error.error} %]

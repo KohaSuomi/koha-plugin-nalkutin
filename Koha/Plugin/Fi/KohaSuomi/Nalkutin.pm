@@ -9,6 +9,7 @@ use XML::LibXML;
 use Storable;
 
 use C4::Auth qw(get_template_and_user);
+use C4::Languages qw(getlanguage);
 use Koha::Caches;
 
 our $metadata = {
@@ -558,7 +559,6 @@ sub CheckMARC21FormatErrors {
 		    	'error' => 'FIELD_LENGTH'
 		    	);
 		    push(@errors, \%tmphash);
-                    #push(@errors, "FIELD_LENGTH: field:$fi, length:" . length($f->data()) . ", wanted:$tmp");
 		    next;
 		}
 	    }
@@ -589,7 +589,6 @@ sub CheckMARC21FormatErrors {
 				    'error' => 'FIELD_VALUE_POS'
 				    );
 				push(@errors, \%tmphash);
-                                #push(@errors, "FIELD_VALUE_POS: field:$fi/$ffk, value:$s, required:$allow_vals");
 				next;
 			    }
 			} elsif ($ffk =~ /^(\d+)-(\d+)$/) {
@@ -604,7 +603,6 @@ sub CheckMARC21FormatErrors {
 				    'error' => 'FIELD_VALUE_POS'
 				    );
 				push(@errors, \%tmphash);
-                                #push(@errors, "FIELD_VALUE_POS: field:$fi/$ffk, value:$s, required:$allow_vals");
 				next;
 			    }
 			} else {
@@ -617,7 +615,6 @@ sub CheckMARC21FormatErrors {
 				    'error' => 'FIELD_VALUE'
 				    );
 				push(@errors, \%tmphash);
-                                #push(@errors, "FIELD_VALUE: field:$fi, value:$s, required:$allow_vals");
 				next;
 			    }
 			}
@@ -653,7 +650,6 @@ sub CheckMARC21FormatErrors {
 
 	    if (!defined($valid_fields{$fikey})) {
 		$undeffs{$fi . '$' . $key} = 1;
-		#push(@errors, "field $fikey not defined by format");
 		next;
 	    }
 
@@ -669,7 +665,6 @@ sub CheckMARC21FormatErrors {
 		    'error' => 'NOT_REPEATABLE_SUBFIELD'
 		    );
 		push(@errors, \%tmphash);
-                #push(@errors, "NOT_REPEATABLE_SUBFIELD: field:$k, count:$subff{$k}");
 	    }
 	}
 
@@ -689,7 +684,6 @@ sub CheckMARC21FormatErrors {
 		    'error' => 'INDICATOR'
 		    );
 		push(@errors, \%tmphash);
-                #push(@errors, "INDICATOR: field:$fi, ind:$ind, current:$indv, valid:$tmp");
 	    }
 	}
     }
@@ -701,7 +695,6 @@ sub CheckMARC21FormatErrors {
 	    	'error' => 'NOT_IN_FORMAT'
 	    	);
 	    push(@errors, \%tmphash);
-            #push(@errors, "NOT_IN_FORMAT: field:$undkey");
 	}
     }
 
@@ -713,7 +706,6 @@ sub CheckMARC21FormatErrors {
 	    	'error' => 'NOT_REPEATABLE_FIELD'
 	    	);
 	    push(@errors, \%tmphash);
-            #push(@errors, "NOT_REPEATABLE: field:$k, count:$mainf{$k}");
 	}
     }
 
@@ -738,6 +730,12 @@ sub before_addbiblio_errors {
             is_plugin       => 1,
         }
     );
+
+    my $lang = getlanguage($cgi) || "en";
+    my $lang_inc = $self->bundle_path . "/i18n/$lang" . ".inc";
+    $lang_inc = $self->bundle_path . "/i18n/default" . ".inc" if ( ! -e $lang_inc );
+
+    $template->param( lang_inc => $lang_inc );
 
     foreach my $error (@{$errors}) {
         $template->param( error => $error );

@@ -3,12 +3,10 @@ package Koha::Plugin::Fi::KohaSuomi::Nalkutin;
 use Modern::Perl;
 use base qw(Koha::Plugins::Base);
 
-use Cwd qw(abs_path);
 use MARC::Record;
 use XML::LibXML;
 use Storable;
 
-use C4::Auth qw(get_template_and_user);
 use C4::Languages qw(getlanguage);
 use Koha::Caches;
 
@@ -721,19 +719,11 @@ sub before_addbiblio_errors {
 
     return \@ret if (scalar(@{$errors}) < 1);
 
-    my $cgi = $args->{'cgi'};
-    my ($template, $borrowernumber) = get_template_and_user(
-        {   template_name   => abs_path($self->mbf_path( 'errors.tt' )),
-            query           => $cgi,
-            type            => 'opac',
-            authnotrequired => 0,
-            is_plugin       => 1,
-        }
-    );
+    my $template = $self->get_template({ file => $self->mbf_path . 'errors.tt' });
 
-    my $lang = getlanguage($cgi) || "en";
-    my $lang_inc = $self->bundle_path . "/i18n/$lang" . ".inc";
-    $lang_inc = $self->bundle_path . "/i18n/default" . ".inc" if ( ! -e $lang_inc );
+    my $lang = getlanguage($self->{cgi}) || "en";
+    my $lang_inc = $self->mbf_path . "i18n/$lang" . ".inc";
+    $lang_inc = $self->mbf_path . "i18n/default" . ".inc" if ( ! -e $lang_inc );
 
     $template->param( lang_inc => $lang_inc );
 

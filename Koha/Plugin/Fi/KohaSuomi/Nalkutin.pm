@@ -452,7 +452,7 @@ sub copy_allow_to_regex {
 sub parse_MARC21_format_definition {
     my ($self) = @_;
 
-    my $ignore_marc_fields = $self->retrieve_data('ignore_marc_fields');
+    my $ignore_marc_fields = $self->retrieve_data('ignore_marc_fields') || '';
     # TODO: cachetus?
     #my $cache_key = 'MARC21-formatchecker-bib';
     #my $cache = Koha::Caches->get_instance();

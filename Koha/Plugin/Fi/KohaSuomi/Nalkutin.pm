@@ -576,6 +576,11 @@ sub CheckMARC21FormatErrors {
 		    foreach my $ffk (sort(sort_by_number keys(%ff))) {
                         my $allow_vals = $formatdata->{'allow_regex'}{$rk}{$ffk};
 
+                        # ignoring eg. "007/02"
+                        next if (defined($ignore_fields{$fi . "/" . $ffk}));
+                        # ignoring eg. "007-s/06"
+                        next if (defined($ignore_fields{$fityp . "/" . $ffk}));
+
 			if ($ffk =~ /^\d+$/) {
 			    $s = length($data) < int($ffk) ? '' : substr($data, int($ffk), 1);
 			    if ($s !~ /$ff{$ffk}/) {

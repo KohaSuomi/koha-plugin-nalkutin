@@ -18,7 +18,7 @@ our $metadata = {
     minimum_version => '19.05.00.000',
     maximum_version => undef,
     version         => '0.0.1',
-    description     => 'When cataloguing a biblio record, validate it against the Finnish National Library MARC21 format',
+    description     => 'When cataloguing a biblio record, validate it against the Finnish National Library MARC21 format. (Paikalliskannat, Täti)',
 };
 
 sub new {

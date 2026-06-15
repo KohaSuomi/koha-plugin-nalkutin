@@ -1,16 +1,17 @@
+[% PROCESS "$lang_inc" %]
 [% USE KohaDates %]
 [% INCLUDE 'doc-head-open.inc' %]
- <title>Koha: Nalkutin: Configuration</title>
+ <title>[% I18N.title %]</title>
 [% INCLUDE 'doc-head-close.inc' %]
 </head>
 <body>
 [% INCLUDE 'header.inc' %]
 [% INCLUDE 'cat-search.inc' %]
 
-<div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Home</a> &rsaquo; <a href="/cgi-bin/koha/plugins/plugins-home.pl">Plugins</a> &rsaquo; Nalkutin &rsaquo; Configuration</div>
+<div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">[% I18N.breadcrumb_home %]</a> &rsaquo; <a href="/cgi-bin/koha/plugins/plugins-home.pl">[% I18N.breadcrumb_plugins %]</a> &rsaquo; [% I18N.breadcrumb_nalkutin %]</div>
 
 <div id="doc3">
-    <h3>Koha: Nalkutin Plugin: Configuration</h3>
+    <h3>[% I18N.title %]</h3>
 
     <form method="get">
         <!-- Always pass these two parameters so the plugin system knows what to execute! -->
@@ -19,29 +20,29 @@
 
         <p>
 
-        <label for="ignore_marc_fields">Ignore MARC fields: </label>
+        <label for="ignore_marc_fields">[% I18N.label_ignore_fields %]: </label>
         <input type="text" name="ignore_marc_fields" value="[% ignore_marc_fields %]" placeholder="xxx9,999" />
 
         <p>
 
-        <label for="skip_encoding_levels">Skip Encoding Levels: </label>
+        <label for="skip_encoding_levels">[% I18N.label_skip_encodings %]: </label>
         <input type="text" name="skip_encoding_levels" value="[% skip_encoding_levels %]" />
 
         <p>
 
         <input type="hidden" name="save" value="1" />
 
-        <input type="submit" value="Save configuration" />
+        <input type="submit" value="[% I18N.save %]" />
     </form>
 
     <hr/>
 
     <p>
-        <h5>Upgrade status</h5>
+        <h5>[% I18N.header_upgrade_status %]</h5>
         [% IF last_upgraded %]
-            Plugin was last upgraded on this system on [% last_upgraded | $KohaDates with_hours => 1 %]
+            [% I18N.last_updated %]: [% last_upgraded | $KohaDates with_hours => 1 %]
         [% ELSE %]
-            Plugin has never been upgraded.
+            [% I18N.upgrade_never %]
         [% END %]
     </p>
 
